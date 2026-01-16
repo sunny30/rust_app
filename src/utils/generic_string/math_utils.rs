@@ -19,3 +19,11 @@ pub fn sieve(n:i32)-> Vec<i32>{
     return result ;
     
 }
+
+pub fn power_of_two(n:&i32)->bool{
+    let mut x = *n ;
+    if(x & (x-1) != 0){ 
+        return false ; 
+    }
+    return true ;
+}
