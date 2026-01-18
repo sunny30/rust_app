@@ -2,6 +2,7 @@ mod utils;
 use crate::utils::generic_string::str_utils::get_length ;
 use crate::utils::generic_string::math_utils::* ;
 use crate::utils::generics::sort::sort;
+use crate::utils::generics::parallel_axis_rectangle::* ;
 fn main() {
     let s = String::from("Hello World") ;
     println!("{}", get_length(&s)) ;
@@ -22,6 +23,14 @@ fn main() {
     let mut input2 = Vec::from([1.33, 2.34, 6.67, 0.59]) ;
     sort(& mut input2) ;
     println!("{:?}", input2) ;
-    
+    let rect1 = ParAxisRect::new(1.2,2.5,4.6,5.7) ;
+    let rect2 = ParAxisRect::new(3.3,7.5,9.6,11.7) ;
+    let rect3 = ParAxisRect::new(6.4,2.5,9.6,3.7) ;
+    let rect4 = ParAxisRect::new(4.3,7.7,5.6,9.1) ;
+    let mut input3 = Vec::from([rect1, rect2,rect3, rect4]) ;
+    input3.sort_by(|x, y| x.area().partial_cmp(&y.area()).unwrap() );
+    println!("{:?}", input3)
+
+
 
 }
