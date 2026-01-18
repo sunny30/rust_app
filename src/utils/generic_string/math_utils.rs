@@ -27,3 +27,20 @@ pub fn power_of_two(n:&i32)->bool{
     }
     return true ;
 }
+
+pub fn power_of_p_in_fact(n: &i32,p: &i32)-> i32{
+    let mut result = 0 ;
+    let mut n_cp = *n ;
+    let mut p_cp = *p ;
+   // result = n_cp/p_cp ;
+    while  n_cp > 0{
+        let tmp_res =  n_cp / p_cp ;
+        result = result + tmp_res ;
+        p_cp = p_cp * (*p) ;
+        if tmp_res == 0{
+            break ;
+        }
+    }
+    return result ;
+    
+}
