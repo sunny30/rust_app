@@ -3,6 +3,7 @@ use crate::utils::generic_string::math_utils::*;
 use crate::utils::generic_string::str_utils::get_length;
 use crate::utils::generics::parallel_axis_rectangle::*;
 use crate::utils::generics::sort::sort;
+use crate::utils::generics::matrices::* ;
 fn main() {
     let s = String::from("Hello World");
     println!("{}", get_length(&s));
@@ -29,5 +30,14 @@ fn main() {
     let rect4 = ParAxisRect::new(4.3, 7.7, 5.6, 9.1);
     let mut input3 = Vec::from([rect1, rect2, rect3, rect4]);
     input3.sort_by(|x, y| x.area().partial_cmp(&y.area()).unwrap());
-    println!("{:?}", input3)
+    println!("{:?}", input3);
+    let matrix: Vec<Vec<i32>> = vec![
+        vec![1, 2, 3],
+        vec![4, 5, 6],
+        vec![7, 8, 9]
+    ];
+    let mat1 = Matrices::new(matrix) ;
+    let mat2 = mat1.square_matrix() ;
+    println!("{:?}", mat2) ;
+    
 }

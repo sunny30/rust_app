@@ -1,6 +1,7 @@
 use std::fmt::Display;
 use std::ops::{Add, Mul};
 
+#[derive(Debug)]
 pub struct Matrices<T:Add<Output=T>+ Mul<Output=T>+Copy+Display>{
     pub matrix:Vec<Vec<T>>,
     pub row:i32,
@@ -29,5 +30,10 @@ impl<T:Add<Output=T>+ Mul<Output=T>+Copy+Display> Matrices<T> {
         }
        return  Matrices{matrix:result, row:other.row, col:other.col};
    }
+    
+   pub fn square_matrix(&self) -> Matrices<T>{
+       self.multiply(&self)
+   } 
+    
     
 }
