@@ -38,6 +38,8 @@ fn main() {
     ];
     let mat1 = Matrices::new(matrix) ;
     let mat2 = mat1.square_matrix() ;
+    let mat3 = mat1.power(5) ;
+    println!("{:?}", mat3) ;
     println!("{:?}", mat2) ;
     
 }
