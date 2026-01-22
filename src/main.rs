@@ -25,6 +25,7 @@ fn main() {
     sort(&mut input2);
     println!("{:?}", input2);
     let rect1 = ParAxisRect::new(1.2, 2.5, 4.6, 5.7);
+    println!("{}", pattern_matrix(&rect1));
     let rect2 = ParAxisRect::new(3.3, 7.5, 9.6, 11.7);
     let rect3 = ParAxisRect::new(6.4, 2.5, 9.6, 3.7);
     let rect4 = ParAxisRect::new(4.3, 7.7, 5.6, 9.1);
@@ -41,5 +42,6 @@ fn main() {
     let mat3 = mat1.power(5) ;
     println!("{:?}", mat3) ;
     println!("{:?}", mat2) ;
+    
     
 }
