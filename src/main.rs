@@ -1,9 +1,12 @@
 mod utils;
+
+use std::collections::BinaryHeap;
 use crate::utils::generic_string::math_utils::*;
 use crate::utils::generic_string::str_utils::get_length;
 use crate::utils::generics::parallel_axis_rectangle::*;
 use crate::utils::generics::sort::sort;
 use crate::utils::generics::matrices::* ;
+use crate::utils::generics::priority_queue_struct::* ;
 fn main() {
     let s = String::from("Hello World");
     println!("{}", get_length(&s));
@@ -42,6 +45,17 @@ fn main() {
     let mat3 = mat1.power(5) ;
     println!("{:?}", mat3) ;
     println!("{:?}", mat2) ;
-    
-    
+    println!("{}", pattern_matrix(&input3.get(0).unwrap() ));
+    let val1 = QueueElement::new(1,2) ;
+    let val2 = QueueElement::new(2,3) ;
+    let val3 = QueueElement::new(3,4);
+
+    let mut priority_queue = BinaryHeap::new();
+    priority_queue.push(val1);
+    priority_queue.push(val2);
+    priority_queue.push(val3) ;
+
+    println!("{:?}", priority_queue) ; //max heap
+
+
 }
