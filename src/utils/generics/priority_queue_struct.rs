@@ -1,5 +1,8 @@
 use std::cmp::Ordering;
 use std::fmt::Display;
+use std::hash::Hash;
+use std::os::macos::raw::stat;
+
 #[derive(Debug)]
 pub struct QueueElement<T: Ord+Copy+Display+PartialEq+PartialOrd, U:Ord+Copy+Display+PartialEq+PartialOrd>  {
     priority: T,
@@ -47,6 +50,12 @@ impl<T: Ord+Copy+Display+PartialEq+PartialOrd, U:Ord+Copy+Display+PartialOrd> Or
 impl<T: Ord+Copy+Display+PartialOrd, U:Ord+Copy+Display+PartialOrd> PartialOrd for QueueElement<T, U> {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
         Some(self.cmp(other))
+    }
+}
+
+impl<T: Ord+Copy+Display+PartialOrd, U:Ord+Copy+Display+PartialOrd> Hash for QueueElement<T, U> {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) { 
+        state.write(&*[self.priority.to_string().as_bytes(), self.data.to_string().as_bytes()].concat());
     }
 }
 
