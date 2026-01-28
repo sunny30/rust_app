@@ -70,7 +70,7 @@ pub trait NewTrait<T:Copy+Display+PartialEq+PartialOrd+Clone+Ord> {
     fn get_elem(t: &T) -> Box<Self> where Self: Sized;
 }
 
-impl<T:Copy+Display+PartialEq+PartialOrd+Clone+Ord + 'static> NewTrait<T> for QueueElement<T, T> {
+impl<T:Copy+Display+PartialEq+PartialOrd+Clone+Ord> NewTrait<T> for QueueElement<T, T> {
     fn get_elem(t: &T) -> Box<QueueElement<T, T>> {
         Box::new(Self { priority: t.clone(), data: t.clone() })
     }
