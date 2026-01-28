@@ -7,6 +7,7 @@ use crate::utils::generics::parallel_axis_rectangle::*;
 use crate::utils::generics::sort::sort;
 use crate::utils::generics::matrices::* ;
 use crate::utils::generics::priority_queue_struct::* ;
+
 fn main() {
     let s = String::from("Hello World");
     println!("{}", get_length(&s));
@@ -49,7 +50,11 @@ fn main() {
     let val1 = QueueElement::new(1,2) ;
     let val2 = QueueElement::new(2,3) ;
     let val3 = QueueElement::new(3,4);
-
+    let lval3:QueueElement<i64,i64> = QueueElement::new(3,4);
+    let nval3 = QueueElement::get_elem(&lval3) ;
+    let nval = QueueElement::get_elem(&val1) ;
+    let nval2 = QueueElement::get_elem(&lval3) ;
+    let collection:Vec<Box<dyn NewTrait<QueueElement<_,_>>>> = vec![nval, nval2, nval3] ;
     let mut priority_queue = BinaryHeap::new();
     priority_queue.push(val1);
     priority_queue.push(val2);
