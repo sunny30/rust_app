@@ -38,6 +38,8 @@ impl<T: Ord + Copy + Display + PartialEq + PartialOrd, U: Ord + Copy + Display +
 
 
 
+
+
 impl<T: Ord + Copy + Display + PartialEq + PartialOrd, U: Ord + Copy + Display + PartialOrd> PartialEq<Self> for QueueElement<T, U> {
     fn eq(&self, other: &Self) -> bool {
         self.priority == other.priority && self.data == other.data

@@ -1,6 +1,7 @@
 mod utils;
 
 use std::collections::BinaryHeap;
+use std::fmt::Display;
 use crate::utils::generic_string::math_utils::*;
 use crate::utils::generic_string::str_utils::get_length;
 use crate::utils::generics::parallel_axis_rectangle::*;
@@ -54,7 +55,7 @@ fn main() {
     let nval3 = QueueElement::get_elem(&lval3) ;
     let nval = QueueElement::get_elem(&val1) ;
     let nval2 = QueueElement::get_elem(&lval3) ;
-    let collection:Vec<Box<dyn NewTrait<QueueElement<_,_>>>> = vec![nval, nval2, nval3] ;
+    let collection:Vec<Box<dyn Display>> = vec![nval, nval2, nval3] ;
     let mut priority_queue = BinaryHeap::new();
     priority_queue.push(val1);
     priority_queue.push(val2);
