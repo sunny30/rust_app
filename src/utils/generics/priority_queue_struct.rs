@@ -34,7 +34,43 @@ impl<T: Ord + Copy + Display + PartialEq + PartialOrd, U: Ord + Copy + Display +
     
 }
 
+pub trait AbstractElement{
+    fn can_write(&self) -> bool;
+}
+#[derive(Debug,Copy,Clone)]
+pub struct Element<'a,T:Display>{
+    priority: &'a T
+}
 
+#[derive(Debug,Copy,Clone)]
+pub struct AnothElement<'a,T:Display>{
+    p_value: &'a T 
+}
+
+impl<'a, T:Display> Element<'a, T> {
+    pub(crate) fn new(priority: &'a T) -> Self where Self: Sized{
+        Self { priority }
+    }
+}
+
+
+impl<'a, T:Display> AnothElement<'a, T> {
+    pub(crate) fn new(p_value: &'a T) -> Self where Self: Sized{
+        Self { p_value }
+    }
+}
+
+impl<'a, T:Display> AbstractElement for AnothElement<'a, T> {
+    fn can_write(&self) -> bool {
+        false
+    }
+}
+
+impl<'a, T:Display> AbstractElement for Element<'a, T> {
+    fn can_write(&self) -> bool {
+        true
+    }
+}
 
 
 

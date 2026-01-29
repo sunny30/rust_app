@@ -62,6 +62,12 @@ fn main() {
     priority_queue.push(val3) ;
 
     println!("{:?}", priority_queue) ; //max heap
-
-
+    let p = 1 ;
+    let q = 1.3 ;
+    let pe1 = Element::new(&p) ;
+    let ape = AnothElement::new(&q) ;
+    let dyn_list:Vec<Box<dyn AbstractElement>> = vec![Box::new(pe1), Box::new(ape)] ;
+    for elem in dyn_list {
+       println!("{}", elem.can_write())
+    }
 }
