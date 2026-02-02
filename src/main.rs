@@ -1,3 +1,5 @@
+#![feature(unboxed_closures)]
+
 mod utils;
 
 use std::collections::BinaryHeap;
