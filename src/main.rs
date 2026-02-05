@@ -1,4 +1,3 @@
-#![feature(unboxed_closures)]
 
 mod utils;
 
@@ -69,7 +68,9 @@ fn main() {
     let pe1 = Element::new(&p) ;
     let ape = AnothElement::new(&q) ;
     let dyn_list:Vec<Box<dyn AbstractElement>> = vec![Box::new(pe1), Box::new(ape)] ;
-    for elem in dyn_list {
-       println!("{}", elem.can_write())
+    for elem in &dyn_list {
+       println!("{}", elem.can_write()) ;
     }
+    
+    println!("{:?}", print_message(Box::new(&ape))) 
 }

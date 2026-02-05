@@ -114,3 +114,11 @@ impl<T:Copy+Display+PartialEq+PartialOrd+Clone+Ord> NewTrait<T> for QueueElement
     }
 }
 
+pub fn print_message(c: Box<&dyn AbstractElement>) -> String {
+    if c.can_write() {
+        "Can write".to_string()
+    } else {
+        "Can't write".to_string()
+    }
+}
+
