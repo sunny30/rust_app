@@ -9,6 +9,7 @@ use crate::utils::generics::parallel_axis_rectangle::*;
 use crate::utils::generics::sort::sort;
 use crate::utils::generics::matrices::* ;
 use crate::utils::generics::priority_queue_struct::* ;
+use crate::utils::generics::state::* ;
 
 fn main() {
     let s = String::from("Hello World");
@@ -72,5 +73,10 @@ fn main() {
        println!("{}", elem.can_write()) ;
     }
     
-    println!("{:?}", print_message(Box::new(&ape))) 
+    println!("{:?}", print_message(Box::new(&ape)))  ;
+    let post_text = String::from("Hello World") ;
+    let mut post = Post::new(&post_text) ;
+    println!("{:}",post);
+    post.review_text() ;
+    println!("{:}",post)
 }
