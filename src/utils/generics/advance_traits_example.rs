@@ -26,6 +26,50 @@ impl Add<Meters> for KiloMeters {
     
 }
 
+
+trait Pilot {
+    fn fly(&self)->String ;
+    fn call() ;
+}
+
+
+trait Driver {
+    fn fly(&self) -> String;
+    fn call() ;
+}
+
+struct Human ;
+
+impl Human{
+    pub fn fly(&self) -> String {
+        "I am Human air for firing ".to_string()
+    }
+    
+    pub fn call() {
+        println!("Human calling")
+    }
+}
+
+impl Pilot for Human {
+    fn fly(&self) -> String {
+        "Captain is ready to take off ".to_string()
+    }
+    
+    fn call() {
+        println!("Captain calling")
+    }
+}
+
+impl Driver for Human {
+    fn fly(&self) -> String {
+        "I am Driver, speed is flying ".to_string()
+    }
+    
+    fn call() {
+        println!("Driver calling")
+    }
+}
+
 #[cfg(test)]
 mod tests {
     // Bring all items from the outer scope into the tests module's scope
@@ -42,5 +86,19 @@ mod tests {
         println!("{:?}", res);
         print!("{:?}", res1);
     }
+
+    #[test]
+    fn trait_tests(){
+        let person = Human ;
+        println!("{}", person.fly()) ;
+        println!("{}",Pilot::fly(&person) );
+        println!("{}",Driver::fly(&person) );
+        
+        Human::call() ;
+        <Human as Pilot>::call() ;
+        <Human as Driver>::call() ;
+        
+    }
+    
     
 }
