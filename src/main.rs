@@ -1,15 +1,14 @@
-
 mod utils;
 
-use std::collections::BinaryHeap;
-use std::fmt::Display;
 use crate::utils::generic_string::math_utils::*;
 use crate::utils::generic_string::str_utils::get_length;
+use crate::utils::generics::matrices::*;
 use crate::utils::generics::parallel_axis_rectangle::*;
+use crate::utils::generics::priority_queue_struct::*;
 use crate::utils::generics::sort::sort;
-use crate::utils::generics::matrices::* ;
-use crate::utils::generics::priority_queue_struct::* ;
-use crate::utils::generics::state::* ;
+use crate::utils::generics::state::*;
+use std::collections::BinaryHeap;
+use std::fmt::Display;
 
 fn main() {
     let s = String::from("Hello World");
@@ -39,44 +38,40 @@ fn main() {
     let mut input3 = Vec::from([rect1, rect2, rect3, rect4]);
     input3.sort_by(|x, y| x.area().partial_cmp(&y.area()).unwrap());
     println!("{:?}", input3);
-    let matrix: Vec<Vec<i32>> = vec![
-        vec![1, 2, 3],
-        vec![4, 5, 6],
-        vec![7, 8, 9]
-    ];
-    let mat1 = Matrices::new(matrix) ;
-    let mat2 = mat1.square_matrix() ;
-    let mat3 = mat1.power(5) ;
-    println!("{:?}", mat3) ;
-    println!("{:?}", mat2) ;
-    println!("{}", pattern_matrix(&input3.get(0).unwrap() ));
-    let val1 = QueueElement::new(1,2) ;
-    let val2 = QueueElement::new(2,3) ;
-    let val3 = QueueElement::new(3,4);
-    let lval3:QueueElement<i64,i64> = QueueElement::new(3,4);
-    let nval3 = QueueElement::get_elem(&lval3) ;
-    let nval = QueueElement::get_elem(&val1) ;
-    let nval2 = QueueElement::get_elem(&lval3) ;
-    let collection:Vec<Box<dyn Display>> = vec![nval, nval2, nval3] ;
+    let matrix: Vec<Vec<i32>> = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
+    let mat1 = Matrices::new(matrix);
+    let mat2 = mat1.square_matrix();
+    let mat3 = mat1.power(5);
+    println!("{:?}", mat3);
+    println!("{:?}", mat2);
+    println!("{}", pattern_matrix(&input3.get(0).unwrap()));
+    let val1 = QueueElement::new(1, 2);
+    let val2 = QueueElement::new(2, 3);
+    let val3 = QueueElement::new(3, 4);
+    let lval3: QueueElement<i64, i64> = QueueElement::new(3, 4);
+    let nval3 = QueueElement::get_elem(&lval3);
+    let nval = QueueElement::get_elem(&val1);
+    let nval2 = QueueElement::get_elem(&lval3);
+    let collection: Vec<Box<dyn Display>> = vec![nval, nval2, nval3];
     let mut priority_queue = BinaryHeap::new();
     priority_queue.push(val1);
     priority_queue.push(val2);
-    priority_queue.push(val3) ;
+    priority_queue.push(val3);
 
-    println!("{:?}", priority_queue) ; //max heap
-    let p = 1 ;
-    let q = 1.3 ;
-    let pe1 = Element::new(&p) ;
-    let ape = AnothElement::new(&q) ;
-    let dyn_list:Vec<Box<dyn AbstractElement>> = vec![Box::new(pe1), Box::new(ape)] ;
+    println!("{:?}", priority_queue); //max heap
+    let p = 1;
+    let q = 1.3;
+    let pe1 = Element::new(&p);
+    let ape = AnothElement::new(&q);
+    let dyn_list: Vec<Box<dyn AbstractElement>> = vec![Box::new(pe1), Box::new(ape)];
     for elem in &dyn_list {
-       println!("{}", elem.can_write()) ;
+        println!("{}", elem.can_write());
     }
-    
-    println!("{:?}", print_message(Box::new(&ape)))  ;
-    let post_text = String::from("Hello World") ;
-    let mut post = Post::new(&post_text) ;
-    println!("{:}",post);
-    post.review_text() ;
-    println!("{:}",post)
+
+    println!("{:?}", print_message(Box::new(&ape)));
+    let post_text = String::from("Hello World");
+    let mut post = Post::new(&post_text);
+    println!("{:}", post);
+    post.review_text();
+    println!("{:}", post)
 }
