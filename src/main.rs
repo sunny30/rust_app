@@ -7,8 +7,10 @@ use crate::utils::generics::parallel_axis_rectangle::*;
 use crate::utils::generics::priority_queue_struct::*;
 use crate::utils::generics::sort::sort;
 use crate::utils::generics::state::*;
+use crate::utils::generics::declarative_macro::*;
 use std::collections::BinaryHeap;
 use std::fmt::Display;
+
 
 fn main() {
     let s = String::from("Hello World");
@@ -73,5 +75,9 @@ fn main() {
     let mut post = Post::new(&post_text);
     println!("{:}", post);
     post.review_text();
-    println!("{:}", post)
+    println!("{:}", post);
+    
+    let p_map = Prefix_Sum_Map!(2=>1, 3=>2, 2=>3, 2=>4, 3=>5, 7=>6, 3=>7, 7=>8 ); ;
+    println!("{:?}", p_map);
+    
 }
