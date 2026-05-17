@@ -30,3 +30,15 @@ impl<T: ?Sized> SingleLinkedList<T>{
         }
     }
 }
+
+pub fn add_at_tail<'a, T:?Sized>(linklist: &'a mut SingleLinkedList<T>, data:Box<T>)->(){
+    let tailNode = linklist.tail ;
+    let newNode = SingleLNode::new(data) ;
+    unsafe {
+        (*tailNode).next = newNode;
+        (*linklist).tail = newNode ;
+    }
+    
+}
+
+
