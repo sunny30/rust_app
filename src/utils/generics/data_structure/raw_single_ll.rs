@@ -65,6 +65,21 @@ pub fn add_at_head<'a, T:?Sized>(linklist: &'a mut SingleLinkedList<T>, data:Box
     }
 }
 
+pub fn get_node_at_index<'a, T:?Sized>(linklist: &'a mut SingleLinkedList<T>, index:i32)->*mut SingleLNode<T>{
+    if index<0 || index>=linklist.len{
+        panic!("wrong index at place")
+    }else{
+        let mut currentNode = linklist.head ;
+       unsafe {
+           for i in 0..index {
+               currentNode = (*currentNode).next;
+           }
+       }
+        currentNode
+        /* `*mut SingleLNode<T>` value */
+    }
+}
+
 
 #[test]
 fn single_link_list_test(){
@@ -74,11 +89,14 @@ fn single_link_list_test(){
     add_at_tail(&mut list, Box::new(String::from("tail"))) ;
     add_at_tail(&mut list, Box::new(String::from("new_tail"))) ;
     let mut curr_head = list.head ;
-    for i in 0..list.len{
-        unsafe { 
-            println!("{:?}", (*curr_head).data); 
-            curr_head = (*curr_head).next ;
+    unsafe {
+        for i in 0..list.len {
+            println!("{:?}", (*curr_head).data);
+            curr_head = (*curr_head).next;
         }
+
+        println!("{:?}", (*get_node_at_index(&mut list, 2)).data);
+        println!("{:?}", (*get_node_at_index(&mut list, 0)).data)
     }
 }
 
