@@ -127,7 +127,7 @@ fn single_link_list_test(){
     list.add_at_front(Box::new(String::from("new_first")));
     list.add_at_tail(Box::new(String::from("tail")));
     list.add_at_tail(Box::new(String::from("new_tail"))) ;
-    list.drop_at_index(3) ;
+    list.drop_at_index(2) ;
     let mut curr_head = list.head ;
     for i in 0..list.len{
         unsafe {
