@@ -4,3 +4,5 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+ureq = "2.9"
+scraper = "=0.17.1"

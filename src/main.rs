@@ -13,6 +13,8 @@ use std::fmt::Display;
 
 
 fn main() {
+
+    
     let s = String::from("Hello World");
     println!("{}", get_length(&s));
     println!("Hello, world!");
