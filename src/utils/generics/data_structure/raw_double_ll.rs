@@ -127,6 +127,14 @@ impl<T:?Sized> DoubleLinkList<T> {
             _marker:   PhantomData,
         }
     }
+    
+    pub fn reviter(&self)-> RevIter<T>{
+        RevIter{
+            current:   self.tail,
+            remaining: self.len,
+            _marker:   PhantomData,
+        }
+    }
 
 
 }
@@ -134,6 +142,12 @@ impl<T:?Sized> DoubleLinkList<T> {
 
 
 pub struct Iter<'a, T: ?Sized>{
+    current: *mut DoubleLNode<T>,
+    remaining: i32,
+    _marker: PhantomData<& 'a T>
+}
+
+pub struct RevIter<'a, T:? Sized>{
     current: *mut DoubleLNode<T>,
     remaining: i32,
     _marker: PhantomData<& 'a T>
@@ -156,6 +170,27 @@ impl<'a, T:?Sized>Iterator for Iter<'a,T > {
        }
     }
 }
+
+
+impl<'a, T> Iterator for RevIter<'a, T> {
+    type Item = &'a T;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.current == ptr::null_mut(){
+            return None ;
+        }else{
+            unsafe {
+                let mut node = & (*(self.current)) ;
+                self.current = (*(self.current)).prev ;
+                self.remaining -=1 ;
+                return Some(node.data.as_ref()) ;
+
+            } 
+        }
+    }
+}
+
+
 
 
 
@@ -191,5 +226,9 @@ fn single_link_list_test(){
     // }
     for d in list.iter(){
         println!("{:?}", d.data) ;
+    }
+    
+    for r in list.reviter(){
+        println!("{:?}", r) 
     }
 }
