@@ -27,7 +27,7 @@ pub struct SharedMut<T>{
 }
 
 impl<T> SharedMut<T>{
-    pub fn new(&self, value:T)->Self{
+    pub fn new(value:T)->Self{
         let inner = Inner::new(value) ;
         let boxed = Box::new(inner) ;
         let raw_ptr = Box::into_raw(boxed) ;
@@ -185,5 +185,107 @@ impl<T> Drop for RefMut<'_, T> {
     }
 }
 
+
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn basic_shared_ownership() {
+        let a = SharedMut::new(42);
+        let b = a.clone();
+        let c = b.clone();
+
+        assert_eq!(a.ref_count(), 3);
+        assert_eq!(*a.borrow(), 42);
+        assert_eq!(*b.borrow(), 42);
+        assert_eq!(*c.borrow(), 42);
+    }
+
+    #[test]
+    fn mutation_visible_to_all_handles() {
+        let a = SharedMut::new(0);
+        let b = a.clone();
+
+        // mutate through `a`
+        *a.borrow_mut() = 99;
+
+        // visible through `b` — same heap allocation
+        assert_eq!(*b.borrow(), 99);
+    }
+
+    #[test]
+    fn multiple_shared_borrows_allowed() {
+        let a = SharedMut::new(String::from("hello"));
+        let b = a.clone();
+
+        let r1 = a.borrow();
+        let r2 = b.borrow(); // fine — both are shared borrows
+
+        assert_eq!(*r1, "hello");
+        assert_eq!(*r2, "hello");
+        // r1 and r2 dropped here → borrow_state back to 0
+    }
+
+    #[test]
+    fn ref_count_drops_correctly() {
+        let a = SharedMut::new(10);
+        assert_eq!(a.ref_count(), 1);
+
+        let b = a.clone();
+        assert_eq!(a.ref_count(), 2);
+
+        drop(b);
+        assert_eq!(a.ref_count(), 1);
+        // memory freed when `a` drops at end of scope
+    }
+
+    #[test]
+    #[should_panic(expected = "already mutably borrowed")]
+    fn shared_borrow_while_mutably_borrowed_panics() {
+        let a = SharedMut::new(1);
+        let _m = a.borrow_mut();
+        let _s = a.borrow(); // should panic
+    }
+
+    #[test]
+    #[should_panic(expected = "already borrowed")]
+    fn mutable_borrow_while_shared_borrowed_panics() {
+        let a = SharedMut::new(1);
+        let _s = a.borrow();
+        let _m = a.borrow_mut(); // should panic
+    }
+
+    #[test]
+    #[should_panic(expected = "already borrowed")]
+    fn double_mutable_borrow_panics() {
+        let a = SharedMut::new(1);
+        let _m1 = a.borrow_mut();
+        let _m2 = a.borrow_mut(); // should panic
+    }
+
+    #[test]
+    fn borrow_released_after_guard_drop() {
+        let a = SharedMut::new(vec![1, 2, 3]);
+
+        {
+            let mut m = a.borrow_mut();
+            m.push(4);
+        } // RefMut dropped here → borrow_state = 0
+
+        // can borrow again now
+        assert_eq!(*a.borrow(), vec![1, 2, 3, 4]);
+    }
+
+    #[test]
+    fn works_with_heap_allocated_t() {
+        let a = SharedMut::new(Box::new(String::from("deep")));
+        let b = a.clone();
+
+        assert_eq!(**b.borrow(), "deep");
+    }
+}
 
 
