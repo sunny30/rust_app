@@ -1,5 +1,6 @@
 use std::cell::UnsafeCell;
 use std::marker::PhantomData;
+use std::ops::{Deref, DerefMut};
 use std::ptr::NonNull;
 use crate::utils::generics::priority_queue_struct::Element;
 
@@ -41,7 +42,7 @@ impl<T> SharedMut<T>{
     /// Get a shared (immutable) borrow of the inner value.
     /// Panics if the value is currently mutably borrowed.
     pub fn borrow(&self) -> Ref<'_, T> {
-        let inner = unsafe { self.ptr.as_ref() };
+        let mut inner = unsafe { self.ptr.as_ref() };
 
         if inner.borrow_state < 0 {
             panic!("SharedMut: already mutably borrowed");
@@ -117,8 +118,70 @@ impl<T> Drop for SharedMut<T>{
                 drop(Box::from_raw(self.ptr.as_ptr()));
             }
         }
-        
 
+
+    }
+}
+
+
+//Ref<'a, T> — guard returned by borrow()
+//
+// Lifetime 'a ties this guard to the SharedMut that created it.
+// You cannot drop the SharedMut while a Ref is alive (borrow checker enforces).
+// On drop: decrement borrow_state.
+// ─────────────────────────────────────────────────────────────────────────────
+
+
+impl<T> Deref for Ref<'_, T> {
+    type Target = T;
+
+    fn deref(&self) -> &T {
+        // Safety: borrow_state > 0 means no mutable borrow exists.
+        // UnsafeCell::get gives *mut T; we cast to &T which is safe here
+        // because no &mut T can coexist (enforced by borrow_state check).
+        unsafe { &*self.inner.value.get() }
+    }
+}
+
+impl<T> Drop for Ref<'_, T> {
+    fn drop(&mut self) {
+        // Safety: inner is still valid (SharedMut alive because 'a borrow)
+        unsafe {
+            let inner = self.inner as *const Inner<T> as *mut Inner<T>;  ;
+            (*inner).ref_count-=1
+        }
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RefMut<'a, T> — guard returned by borrow_mut()
+//
+// Same idea as Ref but exclusive. On drop: reset borrow_state to 0.
+// ─────────────────────────────────────────────────────────────────────────────
+
+
+impl<T> Deref for RefMut<'_, T> {
+    type Target = T;
+
+    fn deref(&self) -> &T {
+        unsafe { &*self.inner.value.get() }
+    }
+}
+
+impl<T> DerefMut for RefMut<'_, T> {
+    fn deref_mut(&mut self) -> &mut T {
+        // Safety: borrow_state == -1 means we are the sole mutable borrower.
+        // No other &T or &mut T exists, so this is sound.
+        unsafe { &mut *self.inner.value.get() }
+    }
+}
+
+impl<T> Drop for RefMut<'_, T> {
+    fn drop(&mut self) {
+        unsafe {
+            let state = (self.inner as *const Inner<T> as *mut Inner<T>);
+            (*state).borrow_state = 0;
+        }
     }
 }
 
