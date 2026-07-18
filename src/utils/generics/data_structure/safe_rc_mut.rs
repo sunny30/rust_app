@@ -107,4 +107,20 @@ impl<T> Clone for SharedMut<T>{
 }
 
 
+impl<T> Drop for SharedMut<T>{
+    fn drop(&mut self) {
+        println!("Drop called from Shared Mut") ;
+        unsafe {
+            (*(self.ptr.as_ptr())).ref_count-=1 ;
+            if (*self.ptr.as_ptr()).ref_count == 0 {
+                // Reconstruct the Box → it drops T and frees heap memory
+                drop(Box::from_raw(self.ptr.as_ptr()));
+            }
+        }
+        
+
+    }
+}
+
+
 
