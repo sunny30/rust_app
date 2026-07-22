@@ -286,6 +286,16 @@ mod tests {
 
         assert_eq!(**b.borrow(), "deep");
     }
+
+    #[test]
+    fn borrow_mut_changes_value() {
+        let a = SharedMut::new(10);
+        let b = a.clone();
+
+        *a.borrow_mut() = 99;  // reassign through mutable guard
+
+        assert_eq!(*b.borrow(), 99);  // visible through other handle
+    }
 }
 
 
