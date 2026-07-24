@@ -2,7 +2,6 @@ use std::cell::UnsafeCell;
 use std::marker::PhantomData;
 use std::ops::{Deref, DerefMut};
 use std::ptr::NonNull;
-use crate::utils::generics::priority_queue_struct::Element;
 
 struct Inner<T>{
     ref_count: i32,
